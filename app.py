@@ -7,5 +7,5 @@ def index():
   titulo = "FErnando Daniel Murillo Viv"
   return render_template('index.html', titulo=titulo)
  
-if _name_ == '_main_':
+if __name__ == '__main__':
   app.run(host='0.0.0.0', debug=True, port=5000)
