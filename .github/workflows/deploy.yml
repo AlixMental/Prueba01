@@ -34,7 +34,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            docker image pull alixmental/isafmurillo
-            docker container stop contflaskfernando
-            docker container rm contflaskfernando
-            docker container run -d --name contflaskfernando -p 80:5000 alixmental/isafmurillo:latest
+            sudo docker image pull alixmental/isafmurillo
+            sudo docker container stop contflaskfernando || true
+            sudo docker container rm contflaskfernando || true
+            sudo docker container run -d --name contflaskfernando -p 80:5000 alixmental/isafmurillo:latest
