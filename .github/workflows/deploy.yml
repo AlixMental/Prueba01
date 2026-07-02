@@ -1,0 +1,29 @@
+name: Despliegue Continuo
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Construir imagen Docker
+        run: docker build -t mi-app ./app
+
+      - name: Guardar imagen
+        run: docker save mi-app > mi-app.tar
+
+      - name: Despliegue en EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            docker stop mi-app || true
+            docker rm mi-app || true
+            docker load < mi-app.tar
+            docker run -d --name mi-app -p 80:80 mi-app
